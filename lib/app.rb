@@ -1,5 +1,6 @@
 require_relative 'project'
 require "tty-prompt"
+require 'walltime' 
 
 
 class App
@@ -9,6 +10,7 @@ class App
     def initialize 
         @current_projects = []
         @completed_projects = []
+        @time_stamps = []
         @prompt = TTY::Prompt.new
     end
 
@@ -31,6 +33,8 @@ class App
 
     def new_project(name, hours, rate)
         @job = Project.new(name: name, booked_hours: hours.to_f, hourly_rate: rate.to_f)
+        @timer = Stopwatch.new
+
         
     end
 
@@ -72,10 +76,10 @@ class App
         booked_hours: @job.booked_hours, 
         worked_hours: 0.0, 
         hourly_rate: @job.hourly_rate, 
-        current_hours: 0.0, 
         completed: false, 
         invoiced: false}
         @current_projects << @details
+        
         
         
     end
@@ -84,6 +88,9 @@ class App
         p @current_projects
         p @current_projects.length
         p @current_projects[0][:name]
+        p @timer
+        p @time_stamps
+      
        
         
     end
@@ -97,11 +104,11 @@ class App
     end
 
     def list_project_properties(index)
-        puts @current_projects[index]
+        puts @time_stamps[index]
         
     end
 
-  
+
 
    
     
