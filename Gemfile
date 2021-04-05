@@ -10,4 +10,8 @@ gem "rspec", "~> 3.10"
 
 gem "tty-prompt"
 
-gem "walltime"
+gem 'nokogiri'
+
+gem 'httparty'
+
+gem 'byebug'
