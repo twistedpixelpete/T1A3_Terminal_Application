@@ -1,8 +1,9 @@
 require 'nokogiri'
 require 'httparty'
 require 'byebug'
+require 'tty-prompt'
 
-class Melb
+class Activity
 
     attr_reader :today_activities, :favs, :today_titles, :list
 
@@ -10,9 +11,11 @@ class Melb
         @today_activities = []
         @today_titles =[]
         scrape_today
+        
         @favs = []
         @combine_today_description
         @list = []
+        @prompt = TTY::Prompt.new
         
         
     end
@@ -68,7 +71,7 @@ class Melb
 
         def activity_display
             i=0
-           while i < today_activities.length-1
+           while i < 10
                
               bob = {name: today_activities[i][:title], value: i+1.to_i}
 
@@ -77,6 +80,30 @@ class Melb
                 i += 1     
             end
         end 
+
+
+        def melb_list_today
+
+            i=0
+           while i < 10
+               
+              bob = {name: today_activities[i][:title], value: i+1.to_i}
+
+              @list << bob
+
+                i += 1     
+            end
+              
+
+            @prompt.select("Select an activity to find out more") do |menu|
+                menu.choice @list[0][:name], 1
+                menu.choice @list[1][:name], 2
+                menu.choice "Jax", -> { "Nice choice captain!" }
+              end
+            
+        end
+          
+        
     
 end
 
