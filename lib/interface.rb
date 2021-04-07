@@ -1,6 +1,7 @@
 
 require "tty-prompt"
 require "byebug"
+require 'colorize'
 
 
 
@@ -20,23 +21,20 @@ class Interface
 
     def welcome
         system 'clear'
-        puts @header
+        puts @header.colorize(:color => :light_blue)
         puts "Lets find something to do!".center(@header_length)
-        puts @header
+        puts @header.colorize(:color => :light_blue)
      
     end
 
 
     def title_block(title)
         system 'clear'
-        puts @header
+        puts @header.colorize(:color => :light_blue)
         puts title.center(@header_length)
-        puts @header
+        puts @header.colorize(:color => :light_blue)
 
         
     end
-
-
-
-
 end
+

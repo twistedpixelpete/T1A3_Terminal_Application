@@ -15,3 +15,5 @@ gem 'nokogiri'
 gem 'httparty'
 
 gem 'byebug'
+
+gem 'colorize'
