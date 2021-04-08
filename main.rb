@@ -11,7 +11,9 @@ prompt = TTY::Prompt.new
 favs = []
 sorted_favs = []
 
-
+File.open("./data/favorites.txt").each do |line|
+    favs << line
+end
 
 def today_menu(prompt, interface, whats_on, list, favs, main_menu) 
 
@@ -35,6 +37,10 @@ def today_menu(prompt, interface, whats_on, list, favs, main_menu)
         
             if option == 1
                 favs << whats_on.list[chosen_activity-1][:name]
+                File.open("./data/favorites.txt", "a") do |file|
+                    file.puts "#{whats_on.list[chosen_activity-1][:name]}"
+                    
+                end
 
                 puts "Done!\n#{whats_on.list[chosen_activity-1][:name]} added to favorites!".light_green
 
@@ -57,15 +63,15 @@ end
 
 def sort_favs(favs, sorted_favs)
 
-    i=0
-           while i < favs.length
+        i=0
+        while i < favs.length
                
-              bob = {name: favs[i], value: i+1.to_i}
+            bob = {name: favs[i], value: i+1.to_i}
 
-              sorted_favs << bob
+            sorted_favs << bob
 
                 i += 1     
-            end
+        end
     
 end
 
@@ -78,11 +84,14 @@ def favorites_list(prompt, interface, whats_on, favs, sorted_favs)
         puts "You have no favorites!"
     end
     favs.uniq
-    puts favs
+    File.open("./data/favorites.txt").each do |line|
+        puts line
+    end
     sort_favs(favs, sorted_favs)
-    # puts sorted_favs
+    # p sorted_favs
+    
 
-    chosen_activity = prompt.select("\nSelect to delete or EXIT to main menu\n", sorted_favs.push({name: "--Go Back to Menu--", value: 11}).uniq )
+    chosen_activity = prompt.select("\nSelect to delete or EXIT to main menu\n", sorted_favs.push({name: "--EXIT--", value: 11}).uniq )
 
 
 
