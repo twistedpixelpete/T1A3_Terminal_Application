@@ -5,14 +5,14 @@ require 'tty-prompt'
 
 class Activity
 
-    attr_reader :today_activities, :favs, :today_titles, :list
+    attr_reader :today_activities, :favs, :today_titles, :list, :chosen_activity
 
     def initialize
         @today_activities = []
         @today_titles =[]
         scrape_today
+        @chosen_activity
         
-        @favs = []
         @combine_today_description
         @list = []
         @prompt = TTY::Prompt.new
@@ -92,17 +92,13 @@ class Activity
               @list << bob
 
                 i += 1     
-            end
-              
-
-            @prompt.select("Select an activity to find out more") do |menu|
-                menu.choice @list[0][:name], 1
-                menu.choice @list[1][:name], 2
-                menu.choice "Jax", -> { "Nice choice captain!" }
-              end
+            end  
+  
+           
             
-        end
-          
+  
+        
+        end 
         
     
 end
