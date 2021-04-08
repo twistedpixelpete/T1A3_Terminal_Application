@@ -14,7 +14,7 @@ favs = []
 
 def today_menu(prompt, interface, whats_on, list, favs, main_menu) 
 
-    interface.title_block("Lets find something fun to do today!")
+    interface.title_block("Check out whats on today!")
     whats_on.melb_list_today
 
     chosen_activity = prompt.select("\nSelect an activity to find out more\n", whats_on.list.push({name: "--Go Back to Menu--", value: 11}))
@@ -49,8 +49,9 @@ def today_menu(prompt, interface, whats_on, list, favs, main_menu)
 
         
         else
+           
             
-            puts "i'm here"         
+                     
     end
 end
     
@@ -62,10 +63,10 @@ main_menu = true
     while  main_menu == true
         interface.welcome
          prompt.select("What would you like to do?") do |menu|
-            menu.choice "Check out what's on today", -> { main_menu = false, today_menu(prompt, interface, whats_on, whats_on.list, favs, main_menu)} 
+            menu.choice "Check out what's on today", -> {today_menu(prompt, interface, whats_on, whats_on.list, favs, main_menu)} 
             menu.choice "Check out things to do on the weekend", -> { melb_list_weekend(prompt, interface, whats_on) }
              menu.choice "Look at my favorites", -> { favorites_list(prompt, interface, whats_on) }
-            menu.choice "Exit", -> { leave_app(interface) }    
+            menu.choice "Exit", -> { interface.leave_app }    
             end  
     end   
 
@@ -102,21 +103,7 @@ def leave_section(prompt, interface, whats_on)
     
 end
 
-def leave_app(interface)
-    interface.title_block("See you next time")
-    puts "Have a great day!".colorize(:color => :light_blue)
-    print "3 ".colorize(:color => :light_green)
-    sleep(1)
-    print "2 ".colorize(:color => :yellow)
-    sleep(1)
-    print "1\n".colorize(:color => :light_red)
-    sleep(1)
-    system 'clear'
 
-    app = false
-    exit!
-    
-end
 
 #application loop
 
