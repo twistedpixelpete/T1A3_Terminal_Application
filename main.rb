@@ -80,7 +80,7 @@ def favorites_list(prompt, interface, whats_on, favs, sorted_favs)
     favs.uniq
     puts favs
     sort_favs(favs, sorted_favs)
-    puts sorted_favs
+    # puts sorted_favs
 
     chosen_activity = prompt.select("\nSelect to delete or EXIT to main menu\n", sorted_favs.push({name: "--Go Back to Menu--", value: 11}).uniq )
 
