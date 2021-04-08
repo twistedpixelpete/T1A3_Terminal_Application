@@ -40,12 +40,12 @@ class Interface
     def leave_app
         title_block("See you next time")
         puts "Have a great day!".colorize(:color => :light_blue)
-        print "3 ".colorize(:color => :light_green)
+        # print "3 ".colorize(:color => :light_green)
+        # sleep(1)
+        # print "2 ".colorize(:color => :yellow)
         sleep(1)
-        print "2 ".colorize(:color => :yellow)
-        sleep(1)
-        print "1\n".colorize(:color => :light_red)
-        sleep(1)
+        # print "1\n".colorize(:color => :light_red)
+        # sleep(1)
         system 'clear'
     
         app = false

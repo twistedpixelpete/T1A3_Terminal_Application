@@ -87,9 +87,8 @@ class Activity
             i=0
            while i < 10
                
-              bob = {name: today_activities[i][:title], value: i+1.to_i}
-
-              @list << bob
+              bob = {name: today_activities[i][:title], value: i+1.to_i}           
+                 @list << bob
 
                 i += 1     
             end  
