@@ -141,11 +141,11 @@ class Activity
 #Method to display the main menu
     def main_menu
         @active = 0
-        @prompt.select("What would you like to do?") do |menu|
+        @prompt.select("\nWhat would you like to do?\n".blue) do |menu|
             menu.choice "Check out what's on today", -> {today_menu} 
             menu.choice "Check out things to do on the weekend", -> {weekend_menu}
             menu.choice "Look at my favourites", -> {display_favorites}
-            menu.choice "Exit", -> {leave_app}    
+            menu.choice "Exit".red, -> {leave_app}    
             end    
     end
 
@@ -153,7 +153,7 @@ class Activity
     def today_menu
         today_header
         @selected_activity = []
-        @chosen_today_activity = @prompt.select("\nSelect an activity to find out more\n", @processed_today.push({name: "--Back to Menu--", value: 11}).uniq) 
+        @chosen_today_activity = @prompt.select("\nSelect an activity to find out more\n".blue, @processed_today.push({name: "--Back to Menu--", value: 11}).uniq) 
         today_selection(chosen_today_activity)    
     end
 
@@ -175,7 +175,7 @@ class Activity
 
 #Method to display today return menu
     def today_return_menu
-        today_return_selection = @prompt.select("\nSave to your favourites list or go back".blue) do |menu|
+        today_return_selection = @prompt.select("\nSave to your favourites list or go back\n".blue) do |menu|
             menu.choice "Save to favourites", 1
             menu.choice "Go back", 2
            end 
@@ -245,7 +245,7 @@ class Activity
     def display_favorites
         favorites_header
         if @fav_list.length == 0
-            puts "You have no favourites!!!".yellow
+            puts "You have no favourites!!!".yellow.center(@header_length)
         else
         puts @fav_list.uniq
         end
@@ -257,7 +257,7 @@ class Activity
     def favorites_menu
         
         process_favorites
-        deleted_favorite = @prompt.select("\nSelect a favourite to delete or EXIT to main menu\n", @processed_favs.uniq.push({name: "--EXIT--".green, value: fav_list.length+1}), active_color: :red) 
+        deleted_favorite = @prompt.select("\nSelect a favourite to DELETE or EXIT to main menu\n".blue, @processed_favs.uniq.push({name: "--EXIT--".green, value: fav_list.length+1}), active_color: :red) 
        delete_selection(deleted_favorite)
     end
 
@@ -328,7 +328,7 @@ class Activity
         active = true
         weekend_header
         @selected_activity = []
-        chosen_weekend_activity = @prompt.select("\nSelect an activity to find out more\n", @processed_weekend.push({name: "--Back to Menu--", value: 11}).uniq) 
+        chosen_weekend_activity = @prompt.select("\nSelect an activity to find out more\n".blue, @processed_weekend.push({name: "--Back to Menu--", value: 11}).uniq) 
         weekend_selection(chosen_weekend_activity)    
     end
 

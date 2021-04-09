@@ -14,8 +14,6 @@ gem 'nokogiri'
 
 gem 'httparty'
 
-gem 'byebug'
-
 gem 'colorize'
 
 gem 'json'
@@ -23,3 +21,5 @@ gem 'json'
 gem "tty-progressbar"
 
 gem 'rdoc'
+
+gem 'net-ping'
