@@ -25,6 +25,8 @@ class Activity
         process_today_activities
         @check = true
         @file_path = file_path
+        load_data(file_path)
+        
            
     end
 
@@ -260,14 +262,14 @@ class Activity
 #Method to check if favorite exists
 
     def favorite_check
-        @check = @fav_list.include?(@selected_activity)
+        @check = @fav_list.include?(@selected_activity.last)
        
     end
 
     def leave_app
         leave_header
         puts "Have a great day!".center(@header_length).blue
-        File.write(@file_path, @processed_favs.to_json)
+        File.write(@file_path, @processed_favs.uniq.to_json)
         sleep(1.5)
         system 'clear'
         exit!   
@@ -275,10 +277,21 @@ class Activity
 
     def load_data(file_path)
         json_data = JSON.parse(File.read(file_path))
-        @fav_list = json_data.map do |fav|
+        @processed_favs = json_data.map do |fav|
         fav.transform_keys(&:to_sym)   
         end
+
+        i = 0
+        while i < @processed_favs.length
+
+            items = @processed_favs[i][:name]
+            @fav_list << items
+
+            i += 1
+        end
     end
+
+ 
 
 end
 
