@@ -19,3 +19,7 @@ gem 'byebug'
 gem 'colorize'
 
 gem 'json'
+
+gem "tty-progressbar"
+
+gem 'rdoc'

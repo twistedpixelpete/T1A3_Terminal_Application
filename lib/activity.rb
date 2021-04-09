@@ -1,12 +1,12 @@
 require 'nokogiri'
 require 'httparty'
-require 'byebug'
 require 'tty-prompt'
 require 'colorize'
 require 'json'
 
 #the Class Activity is the application
 class Activity
+    
 
     attr_reader :today_activities, :fav_list, :chosen_today_activity, :processed_today, :weekend_activities
     attr_accessor :selected_activity, :active
@@ -18,7 +18,7 @@ class Activity
         @processed_today = []  
         @processed_weekend = []  
         @processed_favs = []
-        scrape_today
+        scrape_today  
         scrape_weekend
         @chosen_today_activity
         @chosen_weekend_activity
@@ -77,6 +77,7 @@ class Activity
     end
     
 # Method to scrape website for whats happening today in Melbourne
+
     def scrape_today
         url = "https://www.timeout.com/melbourne/things-to-do/things-to-do-in-melbourne-today"
         unparsed_page = HTTParty.get(url)
@@ -88,8 +89,12 @@ class Activity
                 description: activity.css('p').text
             }  
             @today_activities << activity                
-        end               
+        end 
+                  
     end
+    
+
+    
 # Method to scrape website for whats happening on the weekend in Melbourne
     def scrape_weekend
         url = "https://www.timeout.com/melbourne/things-to-do/things-to-do-in-melbourne-this-weekend"
@@ -342,6 +347,8 @@ class Activity
         end
         
     end
+
+    
     
  #Method to display the welcome header
     def welcome_header
