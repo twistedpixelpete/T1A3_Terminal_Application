@@ -75,7 +75,7 @@ whats_on.run
 #         i=0
 #         while i < favs.length
                
-#             bob = {name: favs[i], value: i+1.to_i}
+#             bob = 
 
 #             sorted_favs << bob
 

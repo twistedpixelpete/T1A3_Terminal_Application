@@ -13,6 +13,7 @@ class Activity
     def initialize
         @today_activities = []
         @processed_today = []  
+        @processed_favs = []
         scrape_today
         @chosen_today_activity
         @selected_activity =[]
@@ -65,7 +66,7 @@ class Activity
 
 # Method to delete from favourites
     def delete_favorite(index)
-        @fav_list.delete_at(index)
+        @fav_list.delete_at(index-1)
         
     end
 
@@ -75,7 +76,7 @@ class Activity
             menu.choice "Check out what's on today", -> {today_menu} 
             menu.choice "Check out things to do on the weekend", -> {}
             menu.choice "Look at my favorites", -> {display_favorites}
-            menu.choice "Exit", -> { }    
+            menu.choice "Exit", -> {leave_app}    
             end    
     end
 
@@ -90,7 +91,7 @@ class Activity
 #Method to receive the today selection
     def today_selection(chosen_today_activity)
         if  chosen_today_activity <= 10
-                    puts today_activities[chosen_today_activity-1][:description]
+                    puts "\n#{today_activities[chosen_today_activity-1][:description]}"
                     @selected_activity << today_activities[chosen_today_activity-1][:title] 
                     today_return_menu
         end
@@ -159,22 +160,59 @@ class Activity
 
     def display_favorites
         favorites_header
+        if @fav_list.length == 0
+            puts "You have no favorites!!!".yellow
+        else
         puts @fav_list.uniq
-        gets
+        end
+        line_divider
+        favorites_menu
+    end
+ 
+#Method to display the favorites menu
+    def favorites_menu
+        
+        process_favorites
+        deleted_favorite = @prompt.select("\nSelect a favorite to delete or EXIT to main menu\n", @processed_favs.uniq.push({name: "--EXIT--", value: fav_list.length+1})) 
+       delete_selection(deleted_favorite)
     end
 
+#Method to process delete selection
+    def delete_selection(deleted_favorite)
+
+        if deleted_favorite <= @fav_list.length
+            delete_favorite(deleted_favorite)
+            @processed_favs =[] 
+            display_favorites
+        else 
+        welcome_header
+        main_menu
+        end
+
+    end
+   
 
 
 
-    
-    
-
+#Method to process the activity list for the menu
     def process_today_activities
         i=0
         while i < 10
                item  = {name: today_activities[i][:title], value: i+1.to_i}  
                 
                 @processed_today << item
+                 
+                i += 1     
+            end   
+    end
+
+#Method to process the favorites list for the menu
+    def process_favorites
+        i=0
+        while i < fav_list.length
+               item  = {name: fav_list[i], value: i+1.to_i}
+                
+                @processed_favs << item
                  
                 i += 1     
             end   
@@ -202,12 +240,31 @@ class Activity
         puts @header.light_blue
     end
 
+    def leave_header
+        system 'clear'
+        puts @header.light_blue
+        puts "See you next time!".center(@header_length)
+        puts @header.light_blue
+    end
+
+    def line_divider   
+        puts @header.light_blue
+    end
+
 
 #Method to check if favorite exists
 
     def favorite_check
         @check = @fav_list.include?(@selected_activity)
        
+    end
+
+    def leave_app
+        leave_header
+        puts "Have a great day!".center(@header_length).blue
+        sleep(1.5)
+        system 'clear'
+        exit!   
     end
 
 end
