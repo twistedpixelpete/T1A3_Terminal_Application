@@ -245,7 +245,7 @@ class Activity
     def display_favorites
         favorites_header
         if @fav_list.length == 0
-            puts "You have no favourites!!!".yellow.center(@header_length)
+            puts "You have no favourites!!!".center(@header_length).yellow
         else
         puts @fav_list.uniq
         end
@@ -354,7 +354,7 @@ class Activity
     def welcome_header
         system 'clear'
         puts @header.light_blue
-        puts "Lets find something to do!".center(@header_length)
+        puts "Lets find something to do in Melbourne!".center(@header_length)
         puts @header.light_blue
     end
 #Method to display the today section header
