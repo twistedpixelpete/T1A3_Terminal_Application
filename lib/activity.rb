@@ -39,11 +39,41 @@ class Activity
 
 #Method to run the app
     def run
-        
+          if ARGV.empty?
+            run_normal
+          else
+            run_argv
+          end   
+    end
+
+#Method to run in normal mode
+    def run_normal
         welcome_header
         main_menu
-        
-        
+    end
+
+#method to run in ARVG mode
+    def run_argv
+        first, *other = ARGV
+    ARGV.clear
+    case first
+    when 'favs', "f"
+      display_favorites
+    when 'add'
+        add_to_favorites(other.join(' '))
+        puts "#{other.join(' ')} has been added to the list"
+        process_favorites
+    when 'today', 't'
+        display_today_activity_name
+    when 'weekend', 'w'
+        display_weekend_activity_name
+    when 'all', 'a'
+        display_today_activity_name
+        display_today_activity_name
+    else
+      puts 'Not a valid argument!'
+    end
+    File.write(@file_path, @processed_favs.uniq.to_json)     
     end
     
 # Method to scrape website for whats happening today in Melbourne
@@ -80,6 +110,14 @@ class Activity
         i = 0
         while i < 10
             puts today_activities[i][:title]
+            i += 1   
+        end
+    end
+# Method to display weekend titles
+    def display_weekend_activity_name
+        i = 0
+        while i < 10
+            puts weekend_activities[i][:title]
             i += 1   
         end
     end
@@ -382,6 +420,10 @@ class Activity
 
             i += 1
         end
+    rescue Errno::ENOENT
+        File.open(file_path, 'w+')
+        File.write(file_path, [])
+        retry
     end
 
 end
