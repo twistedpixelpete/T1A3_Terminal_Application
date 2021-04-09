@@ -21,25 +21,25 @@ class Interface
 
     def welcome
         system 'clear'
-        puts @header.colorize(:color => :light_blue)
+        puts @header.light_blue
         puts "Lets find something to do!".center(@header_length)
-        puts @header.colorize(:color => :light_blue)
+        puts @header.light_blue
      
     end
 
 
     def title_block(title)
         system 'clear'
-        puts @header.colorize(:color => :light_blue)
+        puts @header.light_blue
         puts title.center(@header_length)
-        puts @header.colorize(:color => :light_blue)
+        puts @header.light_blue
 
         
     end
 
     def leave_app
         title_block("See you next time")
-        puts "Have a great day!".colorize(:color => :light_blue)
+        puts "Have a great day!".center(@header_length).blue
         # print "3 ".colorize(:color => :light_green)
         # sleep(1)
         # print "2 ".colorize(:color => :yellow)
