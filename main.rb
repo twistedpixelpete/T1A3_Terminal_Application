@@ -1,20 +1,19 @@
 
-require 'byebug'
-require 'tty-prompt'
-require 'colorize'
 require_relative './lib/activity'
 require_relative './lib/interface'
 
 whats_on = Activity.new
 interface = Interface.new 
-prompt = TTY::Prompt.new
-favs = []
-sorted_favs = []
+
+whats_on.run
+
+
+# puts whats_on.processed_today
 
 
 
 # puts whats_on.today_activities[0][:title]
-whats_on.display_today_activity_name
+
 
 # # File.open("./data/favorites.txt").each do |line|
 # #     favs << line
