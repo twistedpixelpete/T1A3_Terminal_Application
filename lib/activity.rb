@@ -3,6 +3,7 @@ require 'httparty'
 require 'byebug'
 require 'tty-prompt'
 require 'colorize'
+require 'json'
 
 class Activity
 
@@ -10,7 +11,7 @@ class Activity
     attr_accessor :selected_activity
 
 # Initialise class variables and scrape website for current information
-    def initialize
+    def initialize(file_path)
         @today_activities = []
         @processed_today = []  
         @processed_favs = []
@@ -23,6 +24,7 @@ class Activity
         @header_length = @header.length
         process_today_activities
         @check = true
+        @file_path = file_path
            
     end
 
@@ -93,6 +95,7 @@ class Activity
         if  chosen_today_activity <= 10
                     puts "\n#{today_activities[chosen_today_activity-1][:description]}"
                     @selected_activity << today_activities[chosen_today_activity-1][:title] 
+                    
                     today_return_menu
         end
         
@@ -113,11 +116,11 @@ class Activity
         case return_selection
         when 1
             if @check == false
-                add_to_favorites(@selected_activity)
+                add_to_favorites(@selected_activity.last)
                 favorite_saved 
                 fav_saved_return   
             else
-                puts "\nYou already have #{@selected_activity} in your favorites".red
+                puts "\nYou already have #{@selected_activity.last} in your favorites".red
                 fav_saved_return   
             end          
         when 2
@@ -204,6 +207,7 @@ class Activity
                  
                 i += 1     
             end   
+            
     end
 
 #Method to process the favorites list for the menu
@@ -216,6 +220,7 @@ class Activity
                  
                 i += 1     
             end   
+            
     end
 
 
@@ -262,12 +267,21 @@ class Activity
     def leave_app
         leave_header
         puts "Have a great day!".center(@header_length).blue
+        File.write(@file_path, @processed_favs.to_json)
         sleep(1.5)
         system 'clear'
         exit!   
     end
 
+    def load_data(file_path)
+        json_data = JSON.parse(File.read(file_path))
+        @fav_list = json_data.map do |fav|
+        fav.transform_keys(&:to_sym)   
+        end
+    end
+
 end
+
 # Title blocksheaders
 
 

@@ -2,8 +2,8 @@
 require_relative './lib/activity'
 require_relative './lib/interface'
 
-whats_on = Activity.new
-interface = Interface.new 
+whats_on = Activity.new("./data/favs.json")
+ 
 
 whats_on.run
 
@@ -75,7 +75,7 @@ whats_on.run
 #         i=0
 #         while i < favs.length
                
-#             bob = 
+#             bob = {name: favs[i], value: i+1.to_i}
 
 #             sorted_favs << bob
 

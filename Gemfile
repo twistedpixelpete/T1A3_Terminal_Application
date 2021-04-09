@@ -17,3 +17,5 @@ gem 'httparty'
 gem 'byebug'
 
 gem 'colorize'
+
+gem 'json'
