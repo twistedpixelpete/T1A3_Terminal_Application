@@ -3,8 +3,6 @@ require 'httparty'
 require 'tty-prompt'
 require 'colorize'
 require 'json'
-require 'net/ping'
-include Net
 require 'netchecker'
 
 #the Class Activity is the application
@@ -39,42 +37,39 @@ class Activity
 
 #Method to run the app
     def run
-          if ARGV.empty? && @alive
-            
-             scrape_today  
+        if  ARGV.empty? && @alive
+            scrape_today  
             scrape_weekend
             process_today_activities
             process_weekend_activities
             run_normal
-          elsif !ARGV.empty? && @alive      
+            elsif !ARGV.empty? && @alive      
             scrape_today  
             scrape_weekend
             process_today_activities
             process_weekend_activities
             run_argv
-          elsif !ARGV.empty? && !@alive
+            elsif !ARGV.empty? && !@alive
             run_argv
-         else    
-           run_offline
-           30.times do
+            else    
+            run_offline
+            30.times do
             sleep(0.1)
             @bar.advance
             end 
-           display_favorites
-          end   
+            display_favorites
+        end   
     end
 
 #Method to run in normal mode
     def run_normal
         welcome_header
-        main_menu
-        
+        main_menu    
     end
 
 #Mehod to run offline
     def run_offline
         offline_header
-
     end
 
 
@@ -82,39 +77,37 @@ class Activity
 #method to run in ARVG mode
     def run_argv
         first, *other = ARGV
-    ARGV.clear
-    
-    case first
-    when 'favs', "f"
-      display_favorites
-    when '-new', "-n"
+        ARGV.clear
+        case first
+        when 'favs', "f"
+        display_favorites
+        when '-new', "-n"
         
         add_to_favorites(other.join(' '))
         puts "#{other.join(' ')} has been added to the list"
         process_favorites
-    when '-today', '-t'
+        when '-today', '-t'
         raise StandardError, "Currently offline, connect the internet to see todays activities - check if online '-online' '-o'" if @alive == false
         display_today_activity_name
-    when '-weekend', '-w'
+        when '-weekend', '-w'
         raise StandardError, "Currently offline, connect the internet to see the weekends activities - check if online '-online' '-o'" if @alive == false
         display_weekend_activity_name
-    when '-all', '-a'
+        when '-all', '-a'
         raise StandardError, "Currently offline, connect the internet to see the list of activities - check if online '-online' '-o'" if @alive == false
         display_today_activity_name
         display_today_activity_name
-    when '-online', '-o'
+        when '-online', '-o'
        puts @alive
-    when '-help', '-h'
+        when '-help', '-h'
        puts "'-today', 't'   Displays todays activities"
        puts "'-weekend', 'w' Displays weekend activities"
        puts "'-all', 'a'     Displays all activities"
        puts "'-new', 'n'     Add your own favourite"
        puts "'-online', 'o'  Checks internet connection"
-    else
-      puts 'Not a valid argument!'
-    end
-    File.write(@file_path, @processed_favs.uniq.to_json)
-         
+       else
+       puts 'Not a valid argument!'
+       end
+       File.write(@file_path, @processed_favs.uniq.to_json)        
     end
     
 # Method to scrape website for whats happening today in Melbourne
@@ -127,11 +120,9 @@ class Activity
         items.each do |activity|
             activity = {
                 title: activity.css('h3.card-title').text.strip,
-                description: activity.css('p').text
-            }  
+                description: activity.css('p').text }  
             @today_activities << activity                
-        end 
-                  
+        end               
     end
     
 
@@ -145,8 +136,7 @@ class Activity
         items.each do |activity|
             activity = {
                 title: activity.css('h3.card-title').text.strip,
-                description: activity.css('p').text
-            }  
+                description: activity.css('p').text }  
             @weekend_activities << activity                
         end               
     end
@@ -175,8 +165,7 @@ class Activity
 
 # Method to delete from favourites
     def delete_favorite(index)
-        @fav_list.delete_at(index-1)
-        
+        @fav_list.delete_at(index-1)       
     end
 
 #Method to display the main menu
@@ -187,7 +176,7 @@ class Activity
             menu.choice "Check out things to do on the weekend", -> {weekend_menu}
             menu.choice "Look at my favourites", -> {display_favorites}
             menu.choice "Exit".red, -> {leave_app}    
-            end    
+           end    
     end
 
 #Method to display the today menu
@@ -206,8 +195,7 @@ class Activity
     def today_selection(chosen_today_activity)
         if  chosen_today_activity <= 10
                     puts "\n#{today_activities[chosen_today_activity-1][:description]}"
-                    @selected_activity << today_activities[chosen_today_activity-1][:title] 
-                    
+                    @selected_activity << today_activities[chosen_today_activity-1][:title]                  
                     today_return_menu
         else
             if chosen_today_activity == 11

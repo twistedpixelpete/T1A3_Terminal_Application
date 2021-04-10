@@ -1,9 +1,7 @@
 
 require_relative './lib/activity'
 require 'tty-progressbar'
-require 'net/ping'
-include Net
-require 'netchecker'
+
 bar = TTY::ProgressBar.new("[:bar]", bar_format: :box, width: 60)
 
  
