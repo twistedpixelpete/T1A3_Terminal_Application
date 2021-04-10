@@ -18,12 +18,7 @@ RSpec.describe Activity do
         end      
     end
 
-    # describe 'display content'
-
-    #    it 'should display todays titles' do
-    #      expected_output = 
-    #    end
-
+  
     describe 'favorites handling' do
       before(:each) do
         activity.fav_list << {title: 'fav 1', description: 'test fav 1'}
