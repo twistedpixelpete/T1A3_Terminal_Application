@@ -100,11 +100,11 @@ class Activity
         when '-online', '-o'
        puts @alive
         when '-help', '-h'
-       puts "'-today', 't'   Displays todays activities"
-       puts "'-weekend', 'w' Displays weekend activities"
-       puts "'-all', 'a'     Displays all activities"
-       puts "'-new', 'n'     Add your own favourite"
-       puts "'-online', 'o'  Checks internet connection"
+       puts "-today, -t   Displays todays activities"
+       puts "-weekend, -w Displays weekend activities"
+       puts "-all, -a     Displays all activities"
+       puts "-new, -n     Add your own favourite"
+       puts "-online, -o  Checks internet connection"
        else
        puts 'Not a valid argument!'
        end
