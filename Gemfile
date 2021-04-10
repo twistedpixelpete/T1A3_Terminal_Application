@@ -23,3 +23,5 @@ gem "tty-progressbar"
 gem 'rdoc'
 
 gem 'net-ping'
+
+gem 'netchecker'

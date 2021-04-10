@@ -13,6 +13,7 @@ GEM
     mini_portile2 (2.5.0)
     multi_xml (0.6.0)
     net-ping (2.0.8)
+    netchecker (0.0.1)
     nokogiri (1.11.2)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
@@ -60,6 +61,7 @@ DEPENDENCIES
   httparty
   json
   net-ping
+  netchecker
   nokogiri
   rdoc
   rspec (~> 3.10)

@@ -3,6 +3,9 @@ require 'httparty'
 require 'tty-prompt'
 require 'colorize'
 require 'json'
+require 'net/ping'
+include Net
+require 'netchecker'
 
 #the Class Activity is the application
 class Activity
@@ -13,36 +16,51 @@ class Activity
 
 # Initialise class variables and scrape website for current information
     def initialize(file_path)
+        
+        connection?
         @today_activities = []
         @weekend_activities = []
         @processed_today = []  
         @processed_weekend = []  
         @processed_favs = []
-        scrape_today  
-        scrape_weekend
         @chosen_today_activity
         @chosen_weekend_activity
         @selected_activity =[]
         @fav_list = []
         @prompt = TTY::Prompt.new
+        @bar = TTY::ProgressBar.new("[:bar]", bar_format: :box, width: 60)
         @header = "-"*60
         @header_length = @header.length
-        process_today_activities
-        process_weekend_activities
-        @check = true
+        # @check = true
         @file_path = file_path
         load_data(file_path)
-       
-        
-           
+                  
     end
 
 #Method to run the app
     def run
-          if ARGV.empty?
+          if ARGV.empty? && @alive
+            
+             scrape_today  
+            scrape_weekend
+            process_today_activities
+            process_weekend_activities
             run_normal
-          else
+          elsif !ARGV.empty? && @alive      
+            scrape_today  
+            scrape_weekend
+            process_today_activities
+            process_weekend_activities
             run_argv
+          elsif !ARGV.empty? && !@alive
+            run_argv
+         else    
+           run_offline
+           30.times do
+            sleep(0.1)
+            @bar.advance
+            end 
+           display_favorites
           end   
     end
 
@@ -50,30 +68,53 @@ class Activity
     def run_normal
         welcome_header
         main_menu
+        
     end
+
+#Mehod to run offline
+    def run_offline
+        offline_header
+
+    end
+
+
 
 #method to run in ARVG mode
     def run_argv
         first, *other = ARGV
     ARGV.clear
+    
     case first
     when 'favs', "f"
       display_favorites
-    when 'add'
+    when '-new', "-n"
+        
         add_to_favorites(other.join(' '))
         puts "#{other.join(' ')} has been added to the list"
         process_favorites
-    when 'today', 't'
+    when '-today', '-t'
+        raise StandardError, "Currently offline, connect the internet to see todays activities - check if online '-online' '-o'" if @alive == false
         display_today_activity_name
-    when 'weekend', 'w'
+    when '-weekend', '-w'
+        raise StandardError, "Currently offline, connect the internet to see the weekends activities - check if online '-online' '-o'" if @alive == false
         display_weekend_activity_name
-    when 'all', 'a'
+    when '-all', '-a'
+        raise StandardError, "Currently offline, connect the internet to see the list of activities - check if online '-online' '-o'" if @alive == false
         display_today_activity_name
         display_today_activity_name
+    when '-online', '-o'
+       puts @alive
+    when '-help', '-h'
+       puts "'-today', 't'   Displays todays activities"
+       puts "'-weekend', 'w' Displays weekend activities"
+       puts "'-all', 'a'     Displays all activities"
+       puts "'-new', 'n'     Add your own favourite"
+       puts "'-online', 'o'  Checks internet connection"
     else
       puts 'Not a valid argument!'
     end
-    File.write(@file_path, @processed_favs.uniq.to_json)     
+    File.write(@file_path, @processed_favs.uniq.to_json)
+         
     end
     
 # Method to scrape website for whats happening today in Melbourne
@@ -151,7 +192,11 @@ class Activity
 
 #Method to display the today menu
     def today_menu
+        if @alive ==true
         today_header
+        else
+        offline_header
+        end
         @selected_activity = []
         @chosen_today_activity = @prompt.select("\nSelect an activity to find out more\n".blue, @processed_today.push({name: "--Back to Menu--", value: 11}).uniq) 
         today_selection(chosen_today_activity)    
@@ -243,7 +288,11 @@ class Activity
 #Method to display the favorites list
 
     def display_favorites
+        if @alive == true
         favorites_header
+        else
+        offline_header
+        end
         if @fav_list.length == 0
             puts "You have no favourites!!!".center(@header_length).yellow
         else
@@ -326,7 +375,11 @@ class Activity
 #Method to display the weekend menu
     def weekend_menu
         active = true
+        if @alive == true
         weekend_header
+        else
+        offline_header
+        end
         @selected_activity = []
         chosen_weekend_activity = @prompt.select("\nSelect an activity to find out more\n".blue, @processed_weekend.push({name: "--Back to Menu--", value: 11}).uniq) 
         weekend_selection(chosen_weekend_activity)    
@@ -385,6 +438,15 @@ class Activity
         puts "See you next time!".center(@header_length)
         puts @header.light_blue
     end
+#method to display the leave header
+    def offline_header
+        system 'clear'
+        puts @header.light_blue
+        puts "Check your network".center(@header_length).red
+        puts "Currently offline - current activities not avilable!".center(@header_length).red
+        puts "You can still look at your favourites though!".center(@header_length).red
+        puts @header.light_blue
+    end
 #Method to display the line divider
     def line_divider   
         puts @header.light_blue
@@ -431,6 +493,14 @@ class Activity
         File.open(file_path, 'w+')
         File.write(file_path, [])
         retry
+    end
+
+
+    def connection?
+       
+        check = Netchecker.new()
+        
+        @alive = check.check_url("google.com", 80) 
     end
 
 end
