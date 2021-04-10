@@ -29,7 +29,8 @@ class Activity
         @bar = TTY::ProgressBar.new("[:bar]", bar_format: :box, width: 60)
         @header = "-"*60
         @header_length = @header.length
-        # @check = true
+        @check = true
+        @active = 1
         @file_path = file_path
         load_data(file_path)
                   
@@ -181,6 +182,7 @@ class Activity
 
 #Method to display the today menu
     def today_menu
+        @active = 1
         if @alive ==true
         today_header
         else
@@ -362,7 +364,7 @@ class Activity
 
 #Method to display the weekend menu
     def weekend_menu
-        active = true
+        active = 2
         if @alive == true
         weekend_header
         else
@@ -483,11 +485,9 @@ class Activity
         retry
     end
 
-
+#Method to check there is an internet connection
     def connection?
-       
-        check = Netchecker.new()
-        
+         check = Netchecker.new() 
         @alive = check.check_url("google.com", 80) 
     end
 
