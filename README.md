@@ -1,5 +1,7 @@
 # whats-on-mel
 
+## a ruby terminal app
+
 ---
 
 The termainal application `whats-on-mel` is a ruby application that lists activities that are happening in and around the city of Melbourne, Australia.
@@ -309,7 +311,3 @@ welcome_header()
 ```
 
 Method to display the welcome header
-
-```
-
-```
