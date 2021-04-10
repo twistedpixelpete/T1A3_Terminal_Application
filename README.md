@@ -61,6 +61,7 @@ The following command line arguments are accepted.
 ## The Activity Class
 
 This Class contains all the methods to run the application.
+The activity class is called from `main.rb` to run the app.
 
 ### Attributes
 
@@ -311,3 +312,12 @@ welcome_header()
 ```
 
 Method to display the welcome header
+
+### Future Expansion
+
+We were given roughly 1 week to create an app for this assignment so I ran out of time to do all that I wanted. Things I may add in the future are:
+
+- email of favorites list capability
+- user log in
+- store all last scraped activities
+- additional catagories to search
